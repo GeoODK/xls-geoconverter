@@ -13,7 +13,9 @@ This tool is for assisting with the “.csv” export formats of ODK Aggregate, 
 
 
 ## Try it out:
-[http://geoodk.com/geoconverter](http://geoodk.com/geoconverter)
+
+[http://converter.geoodk.com/](http://converter.geoodk.com/)
+
 
 
 ## Question
