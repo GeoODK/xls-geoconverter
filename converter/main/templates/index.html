@@ -1,0 +1,105 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Title of the document</title>
+<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"> </script>
+<link rel="stylesheet" type="text/css" href="{% static "app.css" %}">
+<script src="{% static "app.js" %}"></script>
+</head>
+
+<body>
+<div id="container" class="container">
+		<h2>{{title}}</h2>
+<!-- 		<p>{{file_path}}</p>
+		<p>{{geometry_type}}</p>
+		<p>{{geometry_field}}</p> -->
+
+	<h4>Step 1: Upload Data</h4>
+	{% block upload %}
+	<form enctype="multipart/form-data" method="post" name="formupload" >
+		<div id="upload_box">{{form.file}}</div>
+		<input type="submit" value="Upload From" name="formupload" class="btn btn-primary" >
+	</form>
+	{% endblock %}
+
+
+	{%block results %}
+		{% if upload %}
+		<h4>Step 2: Define Parameters</h4>
+			<div>
+			<form class="form-group" enctype="multipart/form-data" method="post" name="createshapeform" id="createshapeform">
+				<input name="file_path" value="{{file_path}}" type="hidden" />
+					<div id="geometry_type_box">
+					<label for="geometry_type">Select Geometry Type: </label>
+					<select id="geometry_type" class="form-control" name="geometry_type">
+						<option value="none">-- Select Type --</option>
+						<option value="point">Point</option>
+						<option value="polygon">Polygon</option>
+						<option value="polyline">Polyline</option>
+					</select>
+					</div>
+					<div id="geometry_field_box">
+						<div id="geo_shape">
+						<label for="geometry_field">Select Geometry Field: </label>
+						<select class="form-control" id="geometry_field" name="geometry_field">
+							<option value="none">-- Select Field --</option>
+							{% for s in schema %}
+								<option value="{{s}}">{{s}}</option>
+							{% endfor %}
+						</select> 
+						</div>
+						<div id="geo_point">
+							<div id="lat_field_box">
+							<label for="lat_field">Select Lat Field</label>
+							<select class="form-control" name="lat_field" id="lat_field">
+								<option value="none">-- Select Field --</option>
+							{% for s in schema %}
+								<option value="{{s}}">{{s}}</option>
+							{% endfor %}
+							</select>
+							</div>
+							<div id="lng_field_box">
+							<label for="lng_field">Select Lat Field</label>
+							<select class="form-control" name="lng_field" id="lng_field">
+							<option value="none">-- Select Field --</option>
+							{% for s in schema %}
+								<option value="{{s}}">{{s}}</option>
+							{% endfor %}
+							</select>
+							</div>
+							
+						</div>
+						
+					</div>
+					<br />
+					<input id="createshape" type="submit" value="Create Shape File" name="createshape" onclick="return validate_form();" class="btn btn-primary" >
+				</form>
+			</div>
+		{% endif %}
+	{% endblock %}
+
+	{%block errors %}
+		<div id="errorBox">
+			<ul id="errorList">
+				{% if upload = False %}
+					<li>Error: File id not upload</li>
+				{% endif %}
+			</ul>
+		</div>
+	{% endblock %}
+
+	{%block fileDownload %}
+		{% if download_path %}
+			<a href="{{ download_path }}" class="btn btn-success">Download</a>
+		{% endif %}
+	{% endblock %}
+
+</div>
+</body>
+
+</html>
