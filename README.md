@@ -28,6 +28,7 @@ If you are using Vagrant  for testing, pull the repo and run
 
 	vagrant up
     
+    
 In the Vagrant file you will notice that it runs the install.sh
 
 	config.vm.provision :shell, path: "install.sh"
