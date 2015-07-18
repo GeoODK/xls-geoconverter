@@ -1,6 +1,5 @@
 # XLS GeoConverter
 import csv
-import csv
 from shapely.geometry import Polygon,Point,LineString, mapping
 from fiona import collection
 import os
@@ -19,9 +18,11 @@ def _convert_poly_to_point(geo):
 	poly_dic = []
 	if geo!="" or geo!='n/a' or geo!= 'null' or geo != 'none' or geo != None:
 		poly_array =  geo.split(';')
+		poly_array = [x for x in poly_array if x]
 		for i in poly_array:
 			row = i.split(' ')
-			if (len(row)>1):
+			row  = [x for x in row if x]
+			if (len(row)>1 and len(poly_array)>1 ):
 				try:
 					point = (float(row[1]),float(row[0]))
 					poly_dic.append(point)
@@ -78,9 +79,9 @@ def build_polygon_shape(file_path,shapefile,schema,geometry_field):
 				        		'properties': shape_props,
 				        		'geometry': mapping(poly)
 				        	});
-	except:
+	except Exception, e:
+		print e
 		return False
-
 	return True
 
 def build_polyline_shape(file_path,shapefile,schema,geometry_field):
@@ -153,20 +154,20 @@ def create_spatial_file(file_path,geometry_type,geometry_field):
 # 	shapeFile = create_spatial_file(file_path,geometry_type,geometry_field)
 # 	return "sds"
 # def _Test_Poylgon():
-# 	file_path = '/vagrant/Data/Polygon_Test_Data.csv'
+# 	file_path = '/Users/jnordling/Downloads/solo-perimetros.csv'
 # 	geometry_type ='polygon'
-# 	geometry_field = 'location/trace'
+# 	geometry_field = 'land_perimeter'
 # 	shapeFile = create_spatial_file(file_path,geometry_type,geometry_field)
 # 	return "sd"
 # def _Test_Polyline():
-# 	file_path = '/vagrant/Data/Polygon_Test_Data.csv'
+# 	file_path = '/Users/jnordling/Downloads/solo-perimetros.csv'
 # 	geometry_type ='polyline'
 # 	geometry_field = 'location/trace'
 # 	shapeFile = create_spatial_file(file_path,geometry_type,geometry_field)
 # 	return "sds"
 
 # def main():
-# 	_Test_Polyline()
+# 	_Test_Poylgon()
 # 	# file_path = '/vagrant/tmp/tmp3BihVD/land_tenure_survey_2015_02_28_07_36_00.csv'
 # 	# geometry_type ='polygon'
 # 	# geometry_field = 'location/trace'
